@@ -1,11 +1,16 @@
-import '../styles/App.css';
+import DashboardSection from './dashboards/dashboardSection';
+import Footer from './header/footer';
+import Header from './header/header';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>DHIS2 Dashboards</h1>
-      </header>
+    <div style={{
+      backgroundColor: '#F3F5F7',
+      height: 'auto'
+    }}>
+      <Header />
+      <DashboardSection />
+      <Footer />
     </div>
   );
 }
