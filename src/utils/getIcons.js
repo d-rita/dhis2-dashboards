@@ -41,15 +41,15 @@ export function getVisualizationIcon(VisualizationItem) {
   return barType
 }
 
-export function getItemTypeIcon(d) {
-  const { type } = d;
+export function getItemTypeIcon(itemData) {
+  const { type } = itemData;
   switch(type){
     case 'MAP':
       return <IconWorld16 />
     case 'TEXT':
       return <IconTextBox16 />
     case 'VISUALIZATION':
-      return getVisualizationIcon(d)
+      return getVisualizationIcon(itemData)
     default:
       return <IconVisualizationArea16 />;
   }

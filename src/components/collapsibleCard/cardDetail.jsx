@@ -1,28 +1,35 @@
 import React from "react";
+import { PropTypes } from "prop-types";
 import { getItemTypeIcon } from "../../utils/getIcons";
 
 function DashboardItemDetail({ itemData }) {
-  const { type } = itemData;
+  const { type, id } = itemData;
   const icon = getItemTypeIcon(itemData);
 
-  return (
-    <div 
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '100%',
-        borderBottom: '1px solid grey'
-      }}
-    >
-      <p>{icon}</p>      
-      <p style={{ marginLeft: '1rem'}}>
-        {type === 'VISUALIZATION' ? itemData['visualization']['name'] : ''}
-        {type === 'TEXT' ? itemData['text'] : ''}
-        {type === 'MAP' ? itemData['map']['name'] : ''}
-      </p>
-    </div>
-  )
+  if (type) {
+    return (
+      <div 
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: '100%',
+          borderBottom: '1px solid grey'
+        }}
+      >
+        <p data-testid={`icon-${id}`}>{icon}</p>      
+        <p style={{ marginLeft: '1rem'}} data-testid={`name-${id}`}>
+          {type === 'VISUALIZATION' ? itemData['visualization']['name'] : ''}
+          {type === 'TEXT' ? itemData['text'] : ''}
+          {type === 'MAP' ? itemData['map']['name'] : ''}
+        </p>
+      </div>
+    )
+  }
+}
+
+DashboardItemDetail.propTypes = {
+  itemData: PropTypes.object
 }
 
 export default DashboardItemDetail ;

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { PropTypes } from "prop-types";
 import {
   IconChevronDown24,
   IconChevronUp24,
   IconStar24,
-  IconStarFilled24 
+  IconStarFilled24,
+  CircularLoader,
 } from '@dhis2/ui';
 import DashboardItemDetail  from './cardDetail';
 import { useFetch } from '../../hooks/useFetch';
@@ -25,7 +27,7 @@ const DashboardCollapsibleCard = ({
   const [details, setDetails] = useState({});
   const [starredCard, setStarredCard] = useState(starredDashboard );
 
-  const { data } = useFetch(`${DASHBOARD_DETAILS_URL}${id}.json`)
+  const { data, loading } = useFetch(`${DASHBOARD_DETAILS_URL}${id}.json`)
 
   useEffect(() => {
     if (data) {
@@ -56,17 +58,18 @@ const DashboardCollapsibleCard = ({
       }}
     >
       <div className='cardTitle'
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
       >
         <h3 onClick={() => OnExpandCard(id)}>{displayName}</h3>
         <div>
           <button
             onClick={handleStarCardClick}
+            data-testid={`star-button-${id}`}
             style={{ 
               border: 'none',
               backgroundColor: 'white' 
@@ -76,6 +79,7 @@ const DashboardCollapsibleCard = ({
           </button>
           <button 
             onClick={() => OnExpandCard(id)}
+            data-testid={`expand-button-${id}`}
             style={{ 
               border: 'none',
               backgroundColor: 'white' 
@@ -92,6 +96,14 @@ const DashboardCollapsibleCard = ({
             padding: '0 1rem 1rem'
           }}
         >
+          {loading ? (
+            <div 
+            data-testid="dashboards-loader" 
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem 0' }}>
+            <CircularLoader extrasmall/>
+            <p>Loading dashboard items...</p>
+          </div>
+          ): ''} 
           {Object.keys(details).length && details.dashboardItems.length ? (
             details.dashboardItems.map((item, i) => {
               let component = ''
@@ -105,6 +117,18 @@ const DashboardCollapsibleCard = ({
       : ''}
     </div>
   )
+}
+
+DashboardCollapsibleCard.propTypes = {
+  dashboardInfo: PropTypes.shape({
+    displayName: PropTypes.string, 
+    id: PropTypes.string, 
+    starred: PropTypes.bool
+  }),
+  expanded: PropTypes.bool,
+  OnExpandCard: PropTypes.func,
+  dashboardItemsCache: PropTypes.object,
+  setDashboardItemsCache: PropTypes.func
 }
 
 export default DashboardCollapsibleCard;

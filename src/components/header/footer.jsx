@@ -13,7 +13,7 @@ const Footer = () => {
         backgroundColor: '#212934'
       }}
     >
-      <p>Created by Diana</p>
+      <p>Created by DN</p>
       <p>Hosted on Netlify</p>
       <p>Code: Github</p>
     </footer>
