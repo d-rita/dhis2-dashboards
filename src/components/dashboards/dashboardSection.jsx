@@ -8,7 +8,7 @@ const DashboardSection = () => {
   const [dashboardItemsCache, setDashboardItemsCache] = useState({})
   const [selectedDashboard, setSelectedDashboard] = useState('')
 
-  const { error, loading, data } = useFetch(DASHBOARDS_URL)
+  const { data } = useFetch(DASHBOARDS_URL)
 
   useEffect(() => {
     if(Object.keys(data).length) {

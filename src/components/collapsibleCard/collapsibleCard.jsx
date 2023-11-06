@@ -25,7 +25,7 @@ const DashboardCollapsibleCard = ({
   const [details, setDetails] = useState({});
   const [starredCard, setStarredCard] = useState(starredDashboard );
 
-  const { error, loading, data } = useFetch(`${DASHBOARD_DETAILS_URL}${id}.json`)
+  const { data } = useFetch(`${DASHBOARD_DETAILS_URL}${id}.json`)
 
   useEffect(() => {
     if (data) {
