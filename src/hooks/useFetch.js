@@ -16,7 +16,7 @@ export const useFetch = (url) => {
           setLoading(false);
           setError(null);
         } else {
-          throw new Error(response.statusText || response.subCode);
+          throw new Error(response.statusText || response.status);
         }
       } catch (e) {
         setError(e);
@@ -25,6 +25,7 @@ export const useFetch = (url) => {
     };
     fetchData();
   }, [url]);
+  
 
   return { error, loading, data };
 };

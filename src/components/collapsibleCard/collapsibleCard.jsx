@@ -6,6 +6,7 @@ import {
   IconStar24,
   IconStarFilled24,
   CircularLoader,
+  IconErrorFilled24
 } from '@dhis2/ui';
 import DashboardItemDetail  from './cardDetail';
 import { useFetch } from '../../hooks/useFetch';
@@ -27,7 +28,7 @@ const DashboardCollapsibleCard = ({
   const [details, setDetails] = useState({});
   const [starredCard, setStarredCard] = useState(starredDashboard );
 
-  const { data, loading } = useFetch(`${DASHBOARD_DETAILS_URL}${id}.json`)
+  const { data, loading, error } = useFetch(`${DASHBOARD_DETAILS_URL}${id}.json`)
 
   useEffect(() => {
     if (data) {
@@ -69,7 +70,7 @@ const DashboardCollapsibleCard = ({
         <div>
           <button
             onClick={handleStarCardClick}
-            data-testid={`star-button-${id}`}
+            data-testid={`${id}-star-button`}
             style={{ 
               border: 'none',
               backgroundColor: 'white' 
@@ -79,7 +80,7 @@ const DashboardCollapsibleCard = ({
           </button>
           <button 
             onClick={() => OnExpandCard(id)}
-            data-testid={`expand-button-${id}`}
+            data-testid={`${id}-expand-button`}
             style={{ 
               border: 'none',
               backgroundColor: 'white' 
@@ -91,20 +92,28 @@ const DashboardCollapsibleCard = ({
       </div>
       {expanded ? 
         (<div 
-          className='cardBody'
+          data-testid={`${id}-card-body`}
           style={{
             padding: '0 1rem 1rem'
           }}
         >
           {loading ? (
             <div 
-            data-testid="dashboards-loader" 
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem 0' }}>
-            <CircularLoader extrasmall/>
-            <p>Loading dashboard items...</p>
-          </div>
+              data-testid="dashboard-items-loader" 
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem 0' }}>
+              <CircularLoader extrasmall/>
+              <p>Loading dashboard items...</p>
+            </div>
+          ): ''}
+           {error ? (
+            <div 
+              data-testid="dashboard-items-error" 
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem 0' }}>
+              <IconErrorFilled24 />
+              <p>There was an error fetching the dashboard items</p>
+            </div>
           ): ''} 
-          {Object.keys(details).length && details.dashboardItems.length ? (
+          {Object.keys(details).length && details.dashboardItems?.length ? (
             details.dashboardItems.map((item, i) => {
               let component = ''
               if (DASHBOARDITEMTYPES.includes(item['type'])) {
@@ -112,7 +121,7 @@ const DashboardCollapsibleCard = ({
               }
               return component;
             })
-          ): ''}
+          ): (!error && !loading) ?  <p>There are no items to display</p> : ''}
         </div>) 
       : ''}
     </div>

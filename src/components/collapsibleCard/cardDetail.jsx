@@ -17,8 +17,8 @@ function DashboardItemDetail({ itemData }) {
           borderBottom: '1px solid grey'
         }}
       >
-        <p data-testid={`icon-${id}`}>{icon}</p>      
-        <p style={{ marginLeft: '1rem'}} data-testid={`name-${id}`}>
+        <p data-testid={`${id}-icon`}>{icon}</p>      
+        <p style={{ marginLeft: '1rem'}} data-testid={`${id}-name`}>
           {type === 'VISUALIZATION' ? itemData['visualization']['name'] : ''}
           {type === 'TEXT' ? itemData['text'] : ''}
           {type === 'MAP' ? itemData['map']['name'] : ''}

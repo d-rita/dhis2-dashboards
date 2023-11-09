@@ -7,22 +7,22 @@ import { columnItemData, mapItemData, textItemData } from './mockData/itemData';
 describe('DashboardItemDetail Component', () => {
   test('renders column visualisation dashboard details', () => {
     render(<DashboardItemDetail itemData={columnItemData}/>);
-    expect(screen.getByTestId('icon-viz1')).toBeInTheDocument()
-    expect(screen.getByTestId('name-viz1')).toBeInTheDocument()
+    expect(screen.getByTestId('viz1-icon')).toBeInTheDocument()
+    expect(screen.getByTestId('viz1-name')).toBeInTheDocument()
     expect(screen.getByText('Test Column Graph')).toBeInTheDocument();
   });
 
   test('renders map dashboard details', () => {
     render(<DashboardItemDetail itemData={mapItemData}/>);
-    expect(screen.getByTestId('icon-map1')).toBeInTheDocument()
-    expect(screen.getByTestId('name-map1')).toBeInTheDocument()
+    expect(screen.getByTestId('map1-icon')).toBeInTheDocument()
+    expect(screen.getByTestId('map1-name')).toBeInTheDocument()
     expect(screen.getByText('Test Map')).toBeInTheDocument();
   });
 
   test('renders text dashboard details', () => {
     render(<DashboardItemDetail itemData={textItemData}/>);
-    expect(screen.getByTestId('icon-text1')).toBeInTheDocument()
-    expect(screen.getByTestId('name-text1')).toBeInTheDocument()
+    expect(screen.getByTestId('text1-icon')).toBeInTheDocument()
+    expect(screen.getByTestId('text1-name')).toBeInTheDocument()
     expect(screen.getByText('Test Text')).toBeInTheDocument();
   });
 

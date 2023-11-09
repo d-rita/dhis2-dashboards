@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CircularLoader } from '@dhis2/ui';
+import { CircularLoader, IconErrorFilled24 } from '@dhis2/ui';
 
 import DashboardCollapsibleCard  from '../collapsibleCard/collapsibleCard';
 import { useFetch } from '../../hooks/useFetch';
@@ -10,7 +10,7 @@ const DashboardSection = () => {
   const [dashboardItemsCache, setDashboardItemsCache] = useState({})
   const [selectedDashboard, setSelectedDashboard] = useState('')
 
-  const { data, loading } = useFetch(DASHBOARDS_URL)
+  const { data, loading, error } = useFetch(DASHBOARDS_URL)
 
   useEffect(() => {
     if(Object.keys(data).length) {
@@ -39,6 +39,17 @@ const DashboardSection = () => {
         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem 0' }}>
         <CircularLoader />
         <p>Loading dashboards...</p>
+      </div>
+    )
+  }
+
+  if(error) {
+    return (
+      <div 
+        data-testid="dashboards-error" 
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem 0' }}>
+        <IconErrorFilled24 />
+        <p>There was an error fetching the dashboards</p>
       </div>
     )
   }
