@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import {
   IconChevronDown24,
@@ -7,6 +7,7 @@ import {
   IconStarFilled24,
   CircularLoader,
   IconErrorFilled24,
+  Tooltip
 } from "@dhis2/ui";
 import DashboardItemDetail from "./cardDetail";
 import { useFetch } from "../../hooks/useFetch";
@@ -16,10 +17,9 @@ export const DASHBOARDITEMTYPES = ["VISUALIZATION", "MAP", "TEXT"];
 
 const DashboardCollapsibleCard = ({
   dashboardInfo,
+  filter,
   expanded,
   OnExpandCard,
-  dashboardItemsCache,
-  setDashboardItemsCache,
 }) => {
   const { displayName, id, starred } = dashboardInfo;
   const checkLocalStorage = localStorage.getItem(id);
@@ -29,21 +29,27 @@ const DashboardCollapsibleCard = ({
       : JSON.parse(localStorage.getItem(id))["starred"];
   const border = expanded ? "2px solid #42a5f5" : "1px solid #A0ADBA";
 
-  const [details, setDetails] = useState({});
+  const [dashboardItems, setDashboardItems] = useState([]);
   const [starredCard, setStarredCard] = useState(starredDashboard);
 
   const { data, loading, error } = useFetch(
     `${DASHBOARD_DETAILS_URL}${id}.json`,
   );
 
+  const filterDashboardItems = useCallback((obj) => {
+    if (obj['dashboardItems']){
+      let filtered = (filter === 'ALL' || filter === '') ? obj['dashboardItems'] : 
+      obj['dashboardItems'].filter((item) => item['type'] === filter);
+      return filtered;
+    }
+  }, [filter])
+
   useEffect(() => {
     if (data) {
-      setDetails(data);
-      setDashboardItemsCache({ ...dashboardItemsCache, [id]: data });
+      setDashboardItems(filterDashboardItems(data))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
+  }, [data, filterDashboardItems, id]);
+  
   const handleStarCardClick = () => {
     setStarredCard(!starredCard);
     const starredDashboard = {
@@ -61,6 +67,7 @@ const DashboardCollapsibleCard = ({
         margin: "1rem 0",
         padding: "1.2rem",
         backgroundColor: "white",
+        cursor: 'pointer'
       }}
     >
       <div
@@ -82,7 +89,13 @@ const DashboardCollapsibleCard = ({
               backgroundColor: "white",
             }}
           >
-            {starredCard ? <IconStarFilled24 /> : <IconStar24 />}
+            <Tooltip 
+              content={starredCard? "Unstar": "Star"} 
+              placement="bottom"
+            >
+              {starredCard ? <IconStarFilled24 /> : <IconStar24 />}
+            </Tooltip>
+            
           </button>
           <button
             onClick={() => OnExpandCard(id)}
@@ -92,7 +105,12 @@ const DashboardCollapsibleCard = ({
               backgroundColor: "white",
             }}
           >
-            {expanded ? <IconChevronUp24 /> : <IconChevronDown24 />}
+            <Tooltip 
+              content={expanded ? "Collapse": "Expand"} 
+              placement="bottom"
+            >
+              {expanded ? <IconChevronUp24 /> : <IconChevronDown24 />}
+            </Tooltip>
           </button>
         </div>
       </div>
@@ -135,8 +153,8 @@ const DashboardCollapsibleCard = ({
           ) : (
             ""
           )}
-          {Object.keys(details).length && details.dashboardItems?.length ? (
-            details.dashboardItems.map((item, i) => {
+          {dashboardItems?.length ? (
+            dashboardItems.map((item, i) => {
               let component = "";
               if (DASHBOARDITEMTYPES.includes(item["type"])) {
                 component = <DashboardItemDetail itemData={item} key={i} />;
@@ -163,9 +181,7 @@ DashboardCollapsibleCard.propTypes = {
     starred: PropTypes.bool,
   }),
   expanded: PropTypes.bool,
-  OnExpandCard: PropTypes.func,
-  dashboardItemsCache: PropTypes.object,
-  setDashboardItemsCache: PropTypes.func,
+  OnExpandCard: PropTypes.func
 };
 
 export default DashboardCollapsibleCard;
