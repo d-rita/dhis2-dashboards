@@ -55,7 +55,7 @@ const DashboardCollapsibleCard = ({
         borderRadius: '20px',
         margin: '1rem 0',
         padding: '1.2rem',
-        backgroundColor: '#F8F9FA'
+        backgroundColor: 'white'
       }}
     >
       <div className='cardTitle'
