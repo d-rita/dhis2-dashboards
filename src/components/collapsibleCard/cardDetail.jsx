@@ -5,6 +5,7 @@ import { getItemTypeIcon } from "../../utils/getIcons";
 function DashboardItemDetail({ itemData }) {
   const { type, id } = itemData;
   const icon = getItemTypeIcon(itemData);
+  const text = type === 'VISUALIZATION' ? itemData['visualization']['name'] : type === 'TEXT' ? itemData['text'] : type === 'MAP' ? itemData['map']['name'] : '';
 
   if (type) {
     return (
@@ -17,15 +18,14 @@ function DashboardItemDetail({ itemData }) {
           borderBottom: '1px solid grey'
         }}
       >
-        <p data-testid={`${id}-icon`}>{icon}</p>      
-        <p style={{ marginLeft: '1rem'}} data-testid={`${id}-name`}>
-          {type === 'VISUALIZATION' ? itemData['visualization']['name'] : ''}
-          {type === 'TEXT' ? itemData['text'] : ''}
-          {type === 'MAP' ? itemData['map']['name'] : ''}
+        <div data-testid={`${id}-icon`}>{icon}</div>
+        <p style={{ marginLeft: '1rem'}} data-testid={`${id}-name`}> 
+        {text}
         </p>
-      </div>
-    )
-  }
+          </div>
+    
+  )
+};
 }
 
 DashboardItemDetail.propTypes = {

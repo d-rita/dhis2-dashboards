@@ -24,6 +24,7 @@ const DashboardCollapsibleCard = ({
   const { displayName, id, starred } = dashboardInfo
   const checkLocalStorage = localStorage.getItem(id)
   const starredDashboard = checkLocalStorage === null ? starred : JSON.parse(localStorage.getItem(id))["starred"]
+  const border = expanded ? '2px solid #42a5f5': '1px solid #A0ADBA';
 
   const [details, setDetails] = useState({});
   const [starredCard, setStarredCard] = useState(starredDashboard );
@@ -51,7 +52,7 @@ const DashboardCollapsibleCard = ({
     <div 
       style={{
         width: '100%',
-        border: '1px solid #A0ADBA',
+        border: `${border}`,
         borderRadius: '20px',
         margin: '1rem 0',
         padding: '1.2rem',
@@ -86,7 +87,7 @@ const DashboardCollapsibleCard = ({
               backgroundColor: 'white' 
             }}
           >
-            {expanded? <IconChevronUp24 />: <IconChevronDown24 />}
+            {expanded ? <IconChevronUp24 />: <IconChevronDown24 />}
           </button>
         </div>
       </div>
