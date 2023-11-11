@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { CircularLoader, IconErrorFilled24 } from "@dhis2/ui";
-
 import DashboardCollapsibleCard from "../collapsibleCard/collapsibleCard";
 import { useFetch } from "../../hooks/useFetch";
 import { DASHBOARDS_URL } from "../../constants";
+import DashboardsFilter from "../filter/dashboardsFilter";
 
 const DashboardSection = () => {
   const [dashboards, setDashboards] = useState([]);
-  const [dashboardItemsCache, setDashboardItemsCache] = useState({});
   const [selectedDashboard, setSelectedDashboard] = useState("");
+  const [filter, setFilter] = useState("ALL");
 
   const { data, loading, error } = useFetch(DASHBOARDS_URL);
 
@@ -23,6 +23,10 @@ const DashboardSection = () => {
       setSelectedDashboard(dashboards[0]["id"]);
     }
   }, [dashboards]);
+
+  const handleFilter = (event) => {
+    setFilter(event.selected)
+  }
 
   const handleExpandCard = (id) => {
     if (id === selectedDashboard) {
@@ -78,14 +82,14 @@ const DashboardSection = () => {
         padding: "1rem",
       }}
     >
+      <DashboardsFilter filter={filter} onChangeFilter={handleFilter}/>
       {dashboards.map((dashboard, i) => (
         <DashboardCollapsibleCard
           key={i}
+          filter={filter}
           dashboardInfo={dashboard}
           expanded={dashboard["id"] === selectedDashboard}
           OnExpandCard={handleExpandCard}
-          dashboardItemsCache={dashboardItemsCache}
-          setDashboardItemsCache={setDashboardItemsCache}
         />
       ))}
     </section>

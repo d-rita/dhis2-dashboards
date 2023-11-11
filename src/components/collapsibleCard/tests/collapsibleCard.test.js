@@ -46,6 +46,7 @@ describe("DashboardCollapsibleCard Component", () => {
         OnExpandCard={handleExpandCard}
         dashboardItemsCache={{}}
         setDashboardItemsCache={() => jest.fn()}
+        filter={'ALL'}
       />,
     );
     expect(screen.getByText("Test Dashboard")).toBeInTheDocument();
@@ -60,6 +61,7 @@ describe("DashboardCollapsibleCard Component", () => {
     ).toBeInTheDocument();
     expect(screen.getByTestId("dashboard-items-loader")).toBeInTheDocument();
   });
+
   test("renders dashboard items when expanded and fetch is done", () => {
     mock.data = mockedSingleDashboardItems;
     mock.loading = false;
@@ -70,6 +72,7 @@ describe("DashboardCollapsibleCard Component", () => {
         OnExpandCard={handleExpandCard}
         dashboardItemsCache={{}}
         setDashboardItemsCache={() => jest.fn()}
+        filter={'ALL'}
       />,
     );
     expect(screen.getByText("Test Dashboard")).toBeInTheDocument();
@@ -99,6 +102,46 @@ describe("DashboardCollapsibleCard Component", () => {
     expect(screen.getByText("Test Text")).toBeInTheDocument();
   });
 
+  test("renders only map dashboard items when map filter is applied", () => {
+    mock.data = mockedSingleDashboardItems;
+    mock.loading = false;
+    render(
+      <DashboardCollapsibleCard
+        dashboardInfo={singleDashboardInfo}
+        expanded={true}
+        OnExpandCard={handleExpandCard}
+        dashboardItemsCache={{}}
+        setDashboardItemsCache={() => jest.fn()}
+        filter={'MAP'}
+      />,
+    );
+    expect(screen.getByText("Test Dashboard")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("test-dashboard-1-star-button"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId("test-dashboard-1-expand-button"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId("test-dashboard-1-card-body"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByTestId("dashboard-items-loader"),
+    ).not.toBeInTheDocument();
+    // map
+    expect(screen.getByTestId("map1-icon")).toBeInTheDocument();
+    expect(screen.getByTestId("map1-name")).toBeInTheDocument();
+    expect(screen.getByText("Test Map")).toBeInTheDocument();
+    // column
+    expect(screen.queryByTestId("viz1-icon")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("viz1-name")).not.toBeInTheDocument();
+    expect(screen.queryByText("Test Column Graph")).not.toBeInTheDocument();
+    // text
+    expect(screen.queryByTestId("text1-icon")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("text1-name")).not.toBeInTheDocument();
+    expect(screen.queryByText("Test Text")).not.toBeInTheDocument();
+  });
+
   test("displays a message if there are no items to show", () => {
     mock.data = {};
     mock.loading = false;
@@ -109,6 +152,7 @@ describe("DashboardCollapsibleCard Component", () => {
         OnExpandCard={handleExpandCard}
         dashboardItemsCache={{}}
         setDashboardItemsCache={() => jest.fn()}
+        filter={'ALL'}
       />,
     );
     expect(screen.getByText("Test Dashboard")).toBeInTheDocument();
@@ -139,6 +183,7 @@ describe("DashboardCollapsibleCard Component", () => {
         OnExpandCard={handleExpandCard}
         dashboardItemsCache={{}}
         setDashboardItemsCache={() => jest.fn()}
+        filter={'ALL'}
       />,
     );
     expect(screen.getByText("Test Dashboard")).toBeInTheDocument();

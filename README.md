@@ -1,6 +1,10 @@
 # DHIS2 Dashboards:
 
-This is a React application that fetches and renders the list of dashboards available to a DHIS2 user. It is hosted on Netlify [here]().
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a2ef16b1-068d-445e-b528-8a537ee2102c/deploy-status)](https://app.netlify.com/sites/voluble-queijadas-983253/deploys)
+
+## Intro:
+
+This is a React application that fetches and renders the list of dashboards available to a DHIS2 user. It is hosted on Netlify [here](https://main--voluble-queijadas-983253.netlify.app/).
 
 ## Getting Started
 
@@ -18,6 +22,7 @@ This is a React application that fetches and renders the list of dashboards avai
 
 - Install dependencies using `yarn`
 - Use `yarn start` to run the app on your local machine
+- Go to http://127.0.0.1:3000 to view the site
 
 ### Run tests:
 
