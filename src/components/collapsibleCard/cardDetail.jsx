@@ -5,31 +5,37 @@ import { getItemTypeIcon } from "../../utils/getIcons";
 function DashboardItemDetail({ itemData }) {
   const { type, id } = itemData;
   const icon = getItemTypeIcon(itemData);
-  const text = type === 'VISUALIZATION' ? itemData['visualization']['name'] : type === 'TEXT' ? itemData['text'] : type === 'MAP' ? itemData['map']['name'] : '';
+  const text =
+    type === "VISUALIZATION"
+      ? itemData["visualization"]["name"]
+      : type === "TEXT"
+      ? itemData["text"]
+      : type === "MAP"
+      ? itemData["map"]["name"]
+      : "";
 
   if (type) {
     return (
-      <div 
+      <div
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          width: '100%',
-          borderBottom: '1px solid grey'
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          width: "100%",
+          borderBottom: "1px solid grey",
         }}
       >
         <div data-testid={`${id}-icon`}>{icon}</div>
-        <p style={{ marginLeft: '1rem'}} data-testid={`${id}-name`}> 
-        {text}
+        <p style={{ marginLeft: "1rem" }} data-testid={`${id}-name`}>
+          {text}
         </p>
-          </div>
-    
-  )
-};
+      </div>
+    );
+  }
 }
 
 DashboardItemDetail.propTypes = {
-  itemData: PropTypes.object
-}
+  itemData: PropTypes.object,
+};
 
-export default DashboardItemDetail ;
+export default DashboardItemDetail;
